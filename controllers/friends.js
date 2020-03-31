@@ -35,8 +35,24 @@ const addFriend = (req, res) => {
     })
 }
 
+const deleteFriend = (req,res) =>{
+    db.query(`DELETE FROM friends WHERE id = $1`,[id])
+      .then(data => res.json(data.rows[0]))
+      .catch(err =>{
+        console.log(err);
+        res.status(500).json({error}:`500 Internal Server Error`)
+      })
+}
+const updateFriend =(req,res) =>{
+  const { first_name, last_name, age } = req.body;
+    db.query(`UPDATE friends SET first_name = $1 last_name = $2 age = $3  WHERE id = $4`,
+      [first_name],[last_name],[age],[id])
+}
+
 module.exports = {
   getAllFriends,
   getFriendById,
   addFriend,
+  deleteFriend,
+  updateFriend,
 };
